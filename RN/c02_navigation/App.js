@@ -7,11 +7,11 @@
  */
 import 'react-native-gesture-handler';
 import * as React from 'react';
-import { Button,View, Text,TextInput } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {Button, View, Text, TextInput,Image} from 'react-native';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 
-function HomeScreen({ navigation ,route}) {
+function HomeScreen({navigation, route}) {
   React.useEffect(() => {
     if (route.params?.post) {
       // Post updated, do something with `route.params.post`
@@ -20,7 +20,7 @@ function HomeScreen({ navigation ,route}) {
   }, [route.params?.post]);
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Home Screen</Text>
       <Button
         title="Go to Details"
@@ -29,6 +29,7 @@ function HomeScreen({ navigation ,route}) {
           navigation.navigate('Details', {
             itemId: 86,
             otherParam: 'anything you want here',
+            name: 'ddddddd',
           });
         }}
       />
@@ -36,17 +37,17 @@ function HomeScreen({ navigation ,route}) {
         title="Create post"
         onPress={() => navigation.navigate('CreatePost')}
       />
-      <Text style={{ margin: 10 }}>Post: {route.params?.post}</Text>
+      <Text style={{margin: 10}}>Post: {route.params?.post}</Text>
     </View>
   );
 }
 
 function DetailsScreen({route, navigation}) {
   /* 2. Get the param */
-  const { itemId } = route.params??{};
-  const { otherParam } = route.params??{};
+  const {itemId} = route.params ?? {};
+  const {otherParam} = route.params ?? {};
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
       <Text>Details Screen</Text>
       <Text>itemId: {itemId}</Text>
       <Text>otherParam: {otherParam}</Text>
@@ -62,11 +63,26 @@ function DetailsScreen({route, navigation}) {
         title="Go back to first screen in stack"
         onPress={() => navigation.popToTop()}
       />
+      <Button
+        title="Update the title"
+        onPress={() =>
+          navigation.setOptions({
+            title: 'My home',
+            headerStyle: {
+              backgroundColor: '#fad123',
+            },
+            headerTintColor: '#fff',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+            },
+          })
+        }
+      />
     </View>
   );
 }
 
-function CreatePostScreen({ navigation, route }) {
+function CreatePostScreen({navigation, route}) {
   const [postText, setPostText] = React.useState('');
 
   return (
@@ -74,7 +90,7 @@ function CreatePostScreen({ navigation, route }) {
       <TextInput
         multiline
         placeholder="What's on your mind?"
-        style={{ height: 200, padding: 10, backgroundColor: 'white' }}
+        style={{height: 200, padding: 10, backgroundColor: 'white'}}
         value={postText}
         onChangeText={setPostText}
       />
@@ -82,27 +98,45 @@ function CreatePostScreen({ navigation, route }) {
         title="Done"
         onPress={() => {
           // Pass params back to home screen
-          navigation.navigate('Home', { post: postText });
+          navigation.navigate('Home', {post: postText});
         }}
       />
     </>
   );
 }
-
-
+function LogoTitle() {
+  return (
+    <Image
+      style={{ width: 20, height: 20 }}
+      source={require('./201805291704461643.png')}
+    />
+  );
+}
 const Stack = createStackNavigator();
 
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Details" component={DetailsScreen} options={{ title: 'Overview' }}/>
+      <Stack.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: '#f4511e',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}>
+        <Stack.Screen name="Home" component={HomeScreen} options={{ headerTitle: props => <LogoTitle {...props} /> }}/>
+        <Stack.Screen
+          name="Details"
+          component={DetailsScreen}
+          options={({route}) => ({title: route?.params?.name})}
+        />
         <Stack.Screen name="CreatePost" component={CreatePostScreen} />
-
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 
