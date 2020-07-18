@@ -8,6 +8,10 @@ target 'c02_navigation' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
+
+  pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
+
   target 'c02_navigationTests' do
     inherit! :complete
     # Pods for testing
