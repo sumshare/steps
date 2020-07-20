@@ -12,6 +12,8 @@ target 'c02_navigation' do
 
   pod 'RNReanimated', :path => '../node_modules/react-native-reanimated'
 
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
   target 'c02_navigationTests' do
     inherit! :complete
     # Pods for testing

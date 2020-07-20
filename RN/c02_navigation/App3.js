@@ -51,7 +51,8 @@ function HomeScreen({navigation, route}) {
   );
 }
 
-function DetailsScreen({route, navigation}) {
+function DetailsScreen(props) {
+  const  {route, navigation}=props
   /* 2. Get the param */
   const {itemId} = route.params ?? {};
   const {otherParam} = route.params ?? {};
@@ -61,6 +62,7 @@ function DetailsScreen({route, navigation}) {
       <Text>itemId: {itemId}</Text>
       <Text>otherParam: {otherParam}</Text>
       <Text>otherParam: {JSON.stringify(route)}</Text>
+      <Text>: {JSON.stringify(props)}</Text>
 
       <Button
         title="Go to Details... again"
